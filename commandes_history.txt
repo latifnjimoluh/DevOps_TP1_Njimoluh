@@ -1,0 +1,9 @@
+# Construction de l'image
+docker build -t njimoluh_anas_farid-flask-app .
+
+# Exécution du conteneur
+docker run -d -p 5000:5000 --name flask-app-container njimoluh_anas_farid-flask-app
+
+# Publication de l'image sur Docker Hub
+docker tag njimoluh_anas_farid-flask-app <votre_compte_dockerhub>/njimoluh_anas_farid-flask-app:latest
+docker push <votre_compte_dockerhub>/njimoluh_anas_farid-flask-app:latest
