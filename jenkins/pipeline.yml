@@ -1,0 +1,20 @@
+pipeline:
+  agent: any
+  stages:
+    - stage: 'Clonage'
+      steps:
+        - checkout scm
+        - echo 'Clonage des fichiers app.py et requirement.txt terminé.'
+
+    - stage: 'Image'
+      steps:
+        - sh 'docker build -t njimoluh_anas_farid-flask-app .'
+        - echo 'Image Docker construite avec succès.'
+
+    - stage: 'Publication'
+      steps:
+        - withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]):
+            sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
+            sh 'docker tag njimoluh_anas_farid-flask-app $DOCKER_HUB_USERNAME/njimoluh_anas_farid-flask-app:latest'
+            sh 'docker push $DOCKER_HUB_USERNAME/njimoluh_anas_farid-flask-app:latest'
+        - echo 'Publication sur Docker Hub terminée.'
